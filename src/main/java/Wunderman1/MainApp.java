@@ -58,6 +58,12 @@ public class MainApp {
 	      //System.out.println(records.get(1));
 	      System.out.println(csr.get(1).getDetails());
 	      
+	      for(Person x : csr) {
+	    	  
+	    	  System.out.println(x.getDetails());
+	      }
+	      System.out.println();
+	      System.out.println();
 	      
 	      // begin network read
 	      
@@ -66,6 +72,11 @@ public class MainApp {
    Queue<Node> PrimaryQueue = new LinkedList<Node>();
    Node child = new Node();
    Node n = new Node(new Person());
+   HashMap<String, Node> nodeHolder = new HashMap<String, Node>();
+   
+   
+   
+   
 	      //List<List<String>> records = new ArrayList<>();
 	      List<Person> rel = new ArrayList<>();
 	      try (BufferedReader br = new BufferedReader(new FileReader(csvFile2))) {
@@ -77,45 +88,193 @@ public class MainApp {
 	              
 	              if(values.length > 2) {
 	            	  // blank lines has value of 1
-	            	  System.out.println("rm " + values.length);
-	            	  System.out.println(Arrays.toString(values));
+	            	  //System.out.println("rm " + values.length);
+	            	  //System.out.println(Arrays.toString(values));
 	            	  
-	            	  
-	            	  //create node
-	            	  // HOLDER -> <email, PERSON>
-	            	  n = new Node(holder.get(values[0]));
-	            	  //System.out.println("jrx "+ holder.get(values[0]).email);
-	            	  //System.out.println(n.data.getDetails());
-	            	  
-	            	  
-	            	  
-	            	  if(values[1].equals("FAMILY")) {
-	            		  child = new Node(holder.get(values[2]));
-	            		  n.family.add(child);
-	            		  child.setParent(n);
+	            	  //if contains key do this
+	            	  if(!nodeHolder.containsKey(holder.get(values[0]).email))
+	            	  {
+	            		  // create node with PERSON data
+	            		  n = new Node(holder.get(values[0]));
 	            		  
-		            	  System.out.println("fam");
-		            	  System.out.println();
+	            		  //set family
+	            		  
+	            		  // set friends
+	            		  
+	            		  //n = new Node(holder.get(values[0]));
+		            	  //System.out.println("jrx "+ holder.get(values[0]).email);
+		            	  //System.out.println(n.data.getDetails());
 		            	  
 		            	  
-		            	  // backwards pass
-		            	  child.family.add(n);
 		            	  
-		            	  }
+		            	  if(values[1].equals("FAMILY")) {
+		            		  child = new Node(holder.get(values[2]));
+		            		  n.family.add(child);
+		            		  child.setParent(n);
+		            		  
+			            	  //System.out.println("fam");
+			            	  System.out.println();
+			            	  
+			            	  
+			            	  // backwards pass
+			            	  child.family.add(n);
+			            	  
+			            	  }
+		            	  
+		            	  if(values[1].equals("FRIEND")) {
+		            		  child = new Node(holder.get(values[2]));
+		            		  n.friends.add(child);
+		            		  child.setParent(n);
+			            	  //System.out.println("frd");
+			            	  System.out.println();
+			            	  
+			            	  // backwards pass
+			            	  child.friends.add(n);
+			            	  
+			            	  }
+		            	  
+		            	 //PrimaryQueue.add(child); 
+	            		  
+	            		  // save to node HOLDER
+	            		  nodeHolder.put(values[0], n);
+	            		  
+	            	  }else {
+	            		  
+	            		  // fetch the desired node to be modified
+	            		  n = nodeHolder.get(values[0]);
+	            		  
+	            		  // edit the relationship
+	            		  
+	            		  if(values[1].equals("FAMILY")) {
+		            		  child = new Node(holder.get(values[2]));
+		            		  n.family.add(child);
+		            		  child.setParent(n);
+		            		  
+			            	  //System.out.println("fam");
+			            	  System.out.println();
+			            	  
+			            	  
+			            	  // backwards pass
+			            	  child.family.add(n);
+			            	  
+			            	  }
+		            	  
+		            	  if(values[1].equals("FRIEND")) {
+		            		  child = new Node(holder.get(values[2]));
+		            		  n.friends.add(child);
+		            		  child.setParent(n);
+			            	  //System.out.println("frd");
+			            	  System.out.println();
+			            	  
+			            	  // backwards pass
+			            	  child.friends.add(n);
+			            	  
+			            	  }
+		            	  
+		            	// save to node HOLDER
+	            		  nodeHolder.put(values[0], n);
+	            	  }
 	            	  
-	            	  if(values[1].equals("FRIEND")) {
-	            		  child = new Node(holder.get(values[2]));
-	            		  n.family.add(child);
-	            		  child.setParent(n);
-		            	  System.out.println("frd");
-		            	  System.out.println();
-		            	  
-		            	  // backwards pass
-		            	  child.friends.add(n);
-		            	  
-		            	  }
 	            	  
-	            	 PrimaryQueue.add(child); 
+	            	  
+	            	  // R1 @ R2
+	            	  // Backwards pass
+	            	  
+	            	//if contains key do this
+	            	  if(!nodeHolder.containsKey(holder.get(values[2]).email))
+	            	  {
+	            		  // create node with PERSON data
+	            		  n = new Node(holder.get(values[2]));
+	            		  
+	            		  //set family
+	            		  
+	            		  // set friends
+	            		  
+	            		  //n = new Node(holder.get(values[0]));
+		            	  //System.out.println("jrx "+ holder.get(values[0]).email);
+		            	  //System.out.println(n.data.getDetails());
+		            	  
+		            	  
+		            	  
+		            	  if(values[1].equals("FAMILY")) {
+		            		  child = new Node(holder.get(values[0]));
+		            		  n.family.add(child);
+		            		  child.setParent(n);
+		            		  
+			            	  //System.out.println("fam");
+			            	  System.out.println();
+			            	  
+			            	  
+			            	  // backwards pass
+			            	  child.family.add(n);
+			            	  
+			            	  }
+		            	  
+		            	  if(values[1].equals("FRIEND")) {
+		            		  child = new Node(holder.get(values[0]));
+		            		  n.friends.add(child);
+		            		  child.setParent(n);
+			            	  //System.out.println("frd");
+			            	  System.out.println();
+			            	  
+			            	  // backwards pass
+			            	  child.friends.add(n);
+			            	  
+			            	  }
+		            	  
+		            	 //PrimaryQueue.add(child); 
+	            		  
+	            		  // save to node HOLDER
+	            		  nodeHolder.put(values[2], n);
+	            		  
+	            	  }else {
+	            		  
+	            		  // fetch the desired node to be modified
+	            		  n = nodeHolder.get(values[2]);
+	            		  
+	            		  // edit the relationship
+	            		  
+	            		  // error here
+	            		  System.out.println("F2F  " + values.length);
+		            	  System.out.println(Arrays.toString(values));
+	            		  
+	            		  if(values[1].equals("FAMILY")) {
+		            		  child = new Node(holder.get(values[0]));
+		            		  n.family.add(child);
+		            		  child.setParent(n);
+		            		  
+			            	  //System.out.println("fam");
+			            	  System.out.println();
+			            	  
+			            	  
+			            	  // backwards pass
+			            	  child.family.add(n);
+			            	  
+			            	  }
+		            	  
+		            	  if(values[1].equals("FRIEND")) {
+		            		  child = new Node(holder.get(values[0]));
+		            		  n.friends.add(child);
+		            		  child.setParent(n);
+			            	  //System.out.println("frd");
+			            	  System.out.println();
+			            	  
+			            	  // backwards pass
+			            	  child.friends.add(n);
+			            	  
+			            	  }
+		            	  
+		            	// save to node HOLDER
+	            		  nodeHolder.put(values[2], n);
+	            	  }
+	            	  
+	            	  
+	            	  
+	            	  
+		            	  
+		            	
+	            	  
+	            	 //PrimaryQueue.add(child); 
 	              }
 	              /*if(values[1].equals("FAMILY")) {
 	            	  System.out.println("fm");
@@ -142,7 +301,26 @@ public class MainApp {
 	      
 	      
 	      
-	      // backwards pass
+	      // check nodes with no relationships
+	      
+	      //Iterator<Map.Entry<String, Person> > iterator = map.entrySet().iterator(); 
+	      System.out.println("WATERVILLE");
+	      for(Person x : csr) {
+	    	  
+	    	  System.out.println(x.getEmail());
+	    	  
+	    	  if(!nodeHolder.containsKey(x.getEmail())) {
+		    		// create node with PERSON data
+	    		  System.out.println("NOT FOUND -> ADD KEY TO NODE");
+	        		  n = new Node(x);
+	        		// save to node HOLDER
+            		  nodeHolder.put(x.getEmail(), n);
+		    	  }
+	      }
+	      System.out.println();
+	      System.out.println();
+	      
+	      
 	      
 	      
 	      
@@ -152,10 +330,27 @@ public class MainApp {
 	      // the cont ???
 	      System.out.println("CONT 1234 ");
 	      System.out.println();
-	     n = PrimaryQueue.poll();
-	      for (Node x : n.family) {
-	    	  System.out.println(n.data.name);
-	      }
+	     //n = PrimaryQueue.poll();
+	      nodeHolder.forEach((k, v) -> {
+	            //System.out.format("key: %s," + System.lineSeparator() + "value: "+ System.lineSeparator() , k, v);
+	    	  System.out.format("key: %s," + System.lineSeparator()  , k, v);
+	            
+	    	  System.out.println("Family >>");
+	    	  System.out.println();
+	            for (Node x : v.family) {
+	            	
+	  	    	  System.out.println(x.data.name);
+	  	      }
+	            System.out.println();
+	            System.out.println("Friends >>");
+	            for (Node x : v.friends) {
+	            	
+	  	    	  System.out.println(x.data.name);
+	  	      }
+	           System.out.println();
+	            
+	        });
+	      
 	      
 	   } // end of MAIN	
 	   

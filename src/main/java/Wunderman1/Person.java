@@ -21,5 +21,10 @@ public class Person {
     	
     	return name + " "+ email; 
     }
+    
+    public String getEmail() {
+    	
+    	return email;
+    }
 
 }
