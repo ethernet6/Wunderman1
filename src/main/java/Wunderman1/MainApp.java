@@ -57,12 +57,15 @@ public class MainApp {
 	      
 	      // end of try catch
 	      
+	      
+	      // PRINT ALL RECORDS
+	      
 	      //System.out.println(records.get(1));
-	      System.out.println(csr.get(1).getDetails());
+	      //System.out.println(csr.get(1).getDetails());
 	      
 	      for(Person x : csr) {
 	    	  
-	    	  System.out.println(x.getDetails());
+	    	  //System.out.println(x.getDetails());
 	      }
 	      System.out.println();
 	      System.out.println();
@@ -92,8 +95,8 @@ public class MainApp {
 	              // only non blank
 	              
 	              if(values.length > 2) {
-	            	  System.out.println(Arrays.asList(values));
-	            	  System.out.println(values[2]);
+	            	  //System.out.println(Arrays.asList(values));
+	            	  //System.out.println(values[2]);
 	            	  
 	            	  if(values[1].equals("FAMILY")) {
 	            		  
@@ -143,7 +146,7 @@ public class MainApp {
 	      System.out.println();
 	      System.out.println();
 	      System.out.println("KEY ->");
-	      Person a = holder.get("bob@bob.com");
+	      Person a = holder.get("dave@dentists.com");
 	      
 	    for(String s : a.family) {
 	    	
@@ -158,7 +161,7 @@ public class MainApp {
 	      System.out.println("WATERVILLE");
 	      for(Person x : csr) {
 	    	  
-	    	  System.out.println(x.getEmail());
+	    	  //System.out.println(x.getEmail());
 	    	  
 	    	  if(!holder.containsKey(x.getEmail())) {
 		    		// create node with PERSON data
@@ -205,7 +208,7 @@ public class MainApp {
 	    	  
 	    	  
 	    	  for (String x : v.family) {
-	    		  System.out.println(x);
+	    		  //System.out.println(x);
 	  	    	  
 	  	    	
 	  	      }
@@ -237,14 +240,46 @@ public class MainApp {
 	      System.out.println();
 	      System.out.println();
 	      System.out.println();
-	      /*String sample =  "kerry@oilcompany.org"; 
-	      int res = countFamily( nodeHolder.get(sample), nodeHolder, 0 );
+	      List<String> store = new ArrayList<String>();
+	      String sample =  "nigel@marketing.com"; 
+	      int res = countFamily( holder.get(sample),holder, 0, store );
 	      System.out.println("Family Count");
-	      System.out.println(sample + "        " + res);*/
+	      System.out.println(sample + "        " + res);
 	   } // end of MAIN	
 	   
 	
 	   
-	   
+	  static int countFamily(Person p, HashMap<String, Person> holder, int count, List<String>  store) {
+		  
+		  //count = p.family.size();
+		  
+		  p.visited = true;
+		  holder.put(p.getEmail(), p);
+		  
+		  if(count == 0) {
+			  store.add(p.getEmail());
+			  count = 1;
+		  }
+		  
+		  
+		  for(String s: p.family) {
+		  
+			  Person x = holder.get(s);
+			  if(!x.visited){
+				  //count++;
+				  System.out.println("nd -> "+ x.getEmail());
+				  store.add(x.getEmail());
+				  x.visited = true;
+				  holder.put(x.getEmail(), x);
+				  count = countFamily(x, holder, count, store);
+				  
+			  }
+			  
+		  }
+		  
+		  //count++;
+		  
+		  return store.size();
+	  } 
 	 
 }
