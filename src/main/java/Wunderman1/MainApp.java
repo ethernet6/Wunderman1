@@ -32,6 +32,8 @@ public class MainApp {
 	      
 	      //List<List<String>> records = new ArrayList<>();
 	      List<Person> csr = new ArrayList<>();
+	      
+	      
 	      try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
 	          String line;
 	          while ((line = br.readLine()) != null) {
@@ -337,23 +339,112 @@ public class MainApp {
 	            
 	    	  System.out.println("Family >>");
 	    	  System.out.println();
+	    	  
+	    	  
+	    	  
+	    	  
+	  	      int res = countFamily( v );
+	  	      System.out.println("Family Count <FE>");
+	  	      System.out.println(v.data.name + "        " + res + "   " + countNode(v) );
+	    	  
+	    	  
+	    	  
+	    	  
+	    	  
 	            for (Node x : v.family) {
 	            	
-	  	    	  System.out.println(x.data.name);
+	  	    	  //System.out.println(x.data.name);
+	  	    	
 	  	      }
 	            System.out.println();
 	            System.out.println("Friends >>");
 	            for (Node x : v.friends) {
 	            	
-	  	    	  System.out.println(x.data.name);
+	  	    	  //System.out.println(x.data.name);
 	  	      }
 	           System.out.println();
 	            
 	        });
 	      
-	      
+	      System.out.println();
+	      System.out.println();
+	      System.out.println();
+	      int res = countFamily( nodeHolder.get("bob@bob.com") );
+	      System.out.println("Family Count");
+	      System.out.println("Bob"+ "        " + res);
 	   } // end of MAIN	
 	   
+	
 	   
+	   
+	   static int countFamily(Node w) {
+		
+		   int count = 0;
+		   Node n = w;
+		   List<String> checked = new ArrayList<>();
+		   
+		   for (Node x : n.family) {
+           	
+	  	    	  //System.out.println(x.data);
+			   
+			   if( !checked.contains(n.data.email) ) {
+				   
+				   
+				   if(!x.visited_site) {
+					   
+					   // 1st degree
+					   
+					   x.visited_site = true;
+					   count = count + 1;
+					   
+					   // store id
+					   checked.add(n.data.email);
+					   
+					   count = countFamily(n);
+					   
+				   }else {
+					   
+				   }
+				   
+			   }
+			   
+			   
+					   
+			   
+			   
+			   
+	  	    	  
+	  	      }
+		   count = count + 1;
+		
+		return count;
+	}
+
+	   
+	   static int countNode(Node w) {
+		   Node n = w;
+		   Stack<Node> solutionStack = new Stack<Node>();
+		   
+		   
+	              solutionStack.push(n.getParent());
+	            
+	              
+	          
+		   
+		  return solutionStack.size(); 
+	   }
+	   
+	   
+	static void deployGraph(){
+		
+	}
+	
+	static void loadPeople(){}
+	
+	static void loadRelationships(){}
+	
+	static void connectPeople(){
+		
+	}
 
 }
